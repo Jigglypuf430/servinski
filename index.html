@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NSW Digital Licence – Prototype</title>
+  <!--  Tailwind CDN for quick styling  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!--  QRCode generator  -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <style>
+    /* ─── Colour tokens ───────────────────────────────────── */
+    :root {
+      --licence-red: #d44646;
+      --holo-size: 1020px; /* tweak for sensitivity & scale */
+    }
+
+    /* ─── Diagonal red ribbon under status bar ───────────── */
+    .ribbon {
+      height: 0.75rem;
+      background: linear-gradient(135deg, var(--licence-red) 0%, #bb3a3a 50%, var(--licence-red) 100%);
+      transform: skewY(-2deg);
+      transform-origin: top left;
+    }
+
+    /* ─── Holographic pattern behind details ─────────────── */
+    .holo {
+      position: relative;
+      overflow: hidden;
+    }
+    .holo::before {
+      content: "";
+      position: absolute;
+      inset: -20%  -20% 0 -20%;
+      background: repeating-conic-gradient(from 0deg at 50% 50%, #fdf497 0deg 15deg, #a6c0fe 15deg 30deg, #fbc2eb 30deg 45deg,
+          #fdf497 45deg 60deg);
+      filter: contrast(1.15) brightness(1.1) saturate(1.4);
+      opacity: 0.65;
+      mix-blend-mode: screen;
+      animation: spin 12s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ─── Under‑18 badge ─────────────── */
+    .badge {
+      @apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-600 text-white;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- ─── Status bar space (Safari safe‑area padding) ─── -->
+  <div class="h-6"></div>
+
+  <!-- ─── App nav bar ─── -->
+  <header class="flex items-center justify-between px-3 py-2 bg-white shadow-sm sticky top-0 z-20">
+    <button id="backBtn" class="text-2xl">&larr;</button>
+    <h1 class="text-base font-semibold">Provisional Driver Licence</h1>
+    <button id="menuBtn" class="text-2xl">&#8942;</button>
+  </header>
+  <div class="ribbon"></div>
+
+  <!-- ─── Card Start ─── -->
+  <main class="max-w-sm mx-auto bg-white shadow-md rounded-b-lg overflow-hidden">
+    <section class="p-4 holo">
+      <!-- Top row → State logo & portrait -->
+      <div class="flex justify-between items-start">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/NSW_Government_logo.svg" alt="NSW" class="h-6 w-auto" />
+        <figure class="w-32 h-40 rounded-sm overflow-hidden shadow-inner border border-gray-200">
+          <img src="https://placehold.co/240x300" alt="Portrait" class="object-cover w-full h-full" />
+        </figure>
+      </div>
+
+      <!--  Refresh timestamp  -->
+      <div class="text-right text-xs text-gray-600 mt-1">
+        <p class="font-semibold">Refreshed</p>
+        <p id="refDate">17 Jan 2025</p>
+        <p id="refTime">10:14 am</p>
+      </div>
+
+      <!--  Name / QR & ID  -->
+      <div class="mt-4 flex flex-col gap-2">
+        <h2 id="fullName" class="text-2xl font-bold tracking-wide leading-6">Callum John BUSH‑BRADY</h2>
+
+        <div class="flex gap-4 mt-2">
+          <div class="flex-1 text-sm">
+            <p class="text-gray-600">Licence number</p>
+            <p id="licenceNumber" class="text-xl font-bold">25216610</p>
+
+            <p class="mt-2 text-gray-600">Expiry</p>
+            <p id="expiry" class="text-xl font-bold">13 Jul 2026</p>
+          </div>
+          <div id="qrcode" class="w-32 h-32 flex-shrink-0"></div>
+        </div>
+      </div>
+    </section>
+
+    <!--  Bottom details  -->
+    <section class="p-4 pt-0 space-y-4 text-sm">
+      <div>
+        <p class="text-gray-600">Date of birth</p>
+        <p class="text-xl font-bold">19 Dec 2007 <span class="badge ml-2">Under 18</span></p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 text-base font-medium">
+        <div class="bg-gray-100 p-3 rounded-lg">
+          <p class="text-gray-600 text-sm mb-1">Class</p>
+          C P1
+        </div>
+        <div class="bg-gray-100 p-3 rounded-lg">
+          <p class="text-gray-600 text-sm mb-1">Conditions</p>
+          Y
+        </div>
+      </div>
+      <div class="bg-gray-100 p-3 rounded-lg">
+        <p class="text-gray-600 text-sm mb-1">Address</p>
+        UNIT 21,
+        49‑53 ALBION ST,
+        WAVERLEY NSW 2024
+      </div>
+    </section>
+  </main>
+
+  <!-- Optional floating nav bar (bottom) could go here -->
+
+  <!-- ─── JS: live timestamp + QR ─── -->
+  <script>
+    // —— quick QR code generation ——
+    const qr = new QRCode(document.getElementById("qrcode"), {
+      text: "NSW|LIC|25216610|2026-07-13",
+      width: 128,
+      height: 128,
+    });
+
+    // —— refresh timestamp helper ——
+    function formatTime(date) {
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+    function updateTimestamp() {
+      const now = new Date();
+      document.getElementById("refDate").textContent = now.toLocaleDateString('en-AU', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+      document.getElementById("refTime").textContent = formatTime(now);
+    }
+    updateTimestamp();
+  </script>
+</body>
+</html>
