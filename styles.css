@@ -1,0 +1,74 @@
+/*********  Custom digital licence theme  *********/
+
+:root {
+  --licence-red: #d44646;
+  /* adjust to scale holographic relative to card */
+  --holo-size: 1040px;
+}
+
+/* ── Angled red ribbon under nav bar ───────────────────────── */
+.ribbon {
+  height: 0.75rem;
+  background: linear-gradient(135deg, var(--licence-red) 0%, #bb3a3a 50%, var(--licence-red) 100%);
+  transform: skewY(-2deg);
+  transform-origin: top left;
+}
+
+/* ── Holographic backdrop masking ──────────────────────────── */
+.holo {
+  position: relative;
+}
+.holo > * {
+  /* keep all text/content above the holo swirl */
+  position: relative;
+  z-index: 1;
+}
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  /*  psychedelic swirl palette */
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    #fdf497 0deg 15deg,
+    #a6c0fe 15deg 30deg,
+    #fbc2eb 30deg 45deg,
+    #fdf497 45deg 60deg
+  );
+  filter: contrast(1.25) brightness(1.1) saturate(1.4);
+  mix-blend-mode: screen;
+
+  /*  animate rotation */
+  width: var(--holo-size);
+  height: var(--holo-size);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 12s linear infinite;
+
+  /*  cut pattern into custom Waratah outline  */
+  /*  supply your own file in /assets or adjust path  */
+  --mask-asset: url("assets/waratah-mask.svg");
+  mask: var(--mask-asset) center/contain no-repeat;
+  -webkit-mask: var(--mask-asset) center/contain no-repeat;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ── Badge styling (Under-18) ─────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #2563eb; /* blue-600 */
+  color: #fff;
+}
