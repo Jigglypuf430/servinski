@@ -17,6 +17,10 @@
 /* ── Holographic backdrop masking ──────────────────────────── */
 .holo {
   position: relative;
+  /* dynamic transforms controlled via JS */
+  --tilt-x: 0px;
+  --tilt-y: 0px;
+  --spin-angle: 0deg;
 }
 .holo > * {
   /* keep all text/content above the holo swirl */
@@ -41,13 +45,13 @@
   filter: contrast(1.25) brightness(1.1) saturate(1.4);
   mix-blend-mode: screen;
 
-  /*  animate rotation */
+  /*  animate rotation via CSS variables */
   width: var(--holo-size);
   height: var(--holo-size);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
+  transform: translate(calc(-50% + var(--tilt-x)), calc(-50% + var(--tilt-y)))
+    rotate(var(--spin-angle));
 
   /*  cut pattern into custom Waratah outline  */
   /*  supply your own file in /assets or adjust path  */
