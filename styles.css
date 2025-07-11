@@ -14,27 +14,18 @@
 
 /* ── Holographic backdrop masking ──────────────────────────── */
 .holo {
-  position: relative;
-  overflow: hidden;
+  @apply relative overflow-hidden;
 }
 .holo-overlay {
-  position: absolute;
-  inset: 0;
+  @apply absolute inset-0 pointer-events-none;
   background: url("assets/holo.png") center/cover no-repeat;
   opacity: 0.6;
-  pointer-events: none;
-  z-index: 0;
-  --mask: url("assets/waratah-mask.png");
-  mask-image: var(--mask);
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: center;
-  -webkit-mask-image: var(--mask);
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
   filter: url(#liquidDistortion);
+  z-index: 0;
+  -webkit-mask: url("assets/waratah-mask.png") center/contain no-repeat;
+          mask: url("assets/waratah-mask.png") center/contain no-repeat;
 }
+/* ensure all existing children sit above */
 .holo > *:not(.holo-overlay) {
   position: relative;
   z-index: 10;

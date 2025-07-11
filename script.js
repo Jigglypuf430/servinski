@@ -1,31 +1,20 @@
 // script.js
 
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay = document.querySelector('.holo-overlay');
-  if (!overlay) return;
-
-  function handleOrientation(evt) {
-    const gamma = Math.max(-90, Math.min(90, evt.gamma || 0));
-    const beta = Math.max(-90, Math.min(90, evt.beta || 0));
-    let x = ((gamma + 90) / 180) * 100;
-    let y = ((beta + 90) / 180) * 100;
-    x = Math.max(0, Math.min(100, x));
-    y = Math.max(0, Math.min(100, y));
-    overlay.style.backgroundPosition = `${x}% ${y}%`;
-  }
-
-  if (
-    window.DeviceOrientationEvent &&
-    typeof DeviceOrientationEvent.requestPermission === 'function'
-  ) {
-    DeviceOrientationEvent.requestPermission()
-      .then((perm) => {
-        if (perm === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-        }
-      })
-      .catch(console.error);
-  } else if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', handleOrientation);
+document.addEventListener('DOMContentLoaded',()=>{
+  const overlay=document.querySelector('.holo-overlay');
+  if(!overlay)return;
+  const tilt=(e)=>{
+    const g=Math.max(-90,Math.min(90,e.gamma||0));
+    const b=Math.max(-90,Math.min(90,e.beta||0));
+    overlay.style.backgroundPosition=
+      `${50+g/90*50}% ${50+b/90*50}%`;
+  };
+  if(window.DeviceOrientationEvent&&
+     typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(p=>{
+      if(p==='granted')window.addEventListener('deviceorientation',tilt);
+    });
+  }else{
+    window.addEventListener('deviceorientation',tilt);
   }
 });
