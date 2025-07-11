@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // CONFIG – tune to taste
   const MAX_TILT_DEG = 25; // clamp device tilt we map
-  const MAX_SHIFT_PX = 40; // max pixel translation from centre
+  const MAX_SHIFT_PX = 0; // max pixel translation from centre
   const SPIN_SPEED = 0; // deg per frame (~9 deg/s @60fps)
 
   // ---------- DeviceOrientation (mobile) ----------
