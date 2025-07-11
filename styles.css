@@ -34,7 +34,7 @@ body{
 .holo{
   position:relative;
   pointer-events:none;         /* JS tilts it; user never taps it   */
-  --tilt-sensitivity:1;        /* read by script.js (px per degree) */
+  --tilt-sensitivity:10;        /* read by script.js (px per degree) */
 }
 
 /* ---------- Hologram overlay (minimal, no glow/no filter) ---------- */
