@@ -2,8 +2,10 @@
 
 :root {
   --licence-red: #d44646;
-  /* adjust to scale holographic relative to card */
-  --holo-size: 1040px;
+  /* hologram sizing relative to viewport */
+  --holo-size: 100vw;
+  --holo-x: 0px;
+  --holo-y: 0px;
 }
 
 /* ── Angled red ribbon under nav bar ───────────────────────── */
@@ -41,13 +43,12 @@
   filter: contrast(1.25) brightness(1.1) saturate(1.4);
   mix-blend-mode: screen;
 
-  /*  animate rotation */
+  /* size + parallax offset */
   width: var(--holo-size);
   height: var(--holo-size);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
+  transform: translate(calc(-50% + var(--holo-x)), calc(-50% + var(--holo-y)));
 
   /*  cut pattern into custom Waratah outline  */
   /*  supply your own file in /assets or adjust path  */
@@ -56,11 +57,6 @@
   -webkit-mask: var(--mask-asset) center/contain no-repeat;
 }
 
-@keyframes spin {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
 
 /* ── Badge styling (Under‑18) ─────────────────────────────── */
 .badge {
