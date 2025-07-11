@@ -68,3 +68,13 @@
   background-color: #2563eb; /* blue‑600 */
   color: #fff;
 }
+.holo{position:relative;overflow:hidden;}
+.holo-overlay{
+  position:absolute;inset:0;
+  background:url("assets/holo.png") center/cover no-repeat;
+  opacity:0.6;filter:url(#liquidDistortion);pointer-events:none;z-index:0;
+  -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
+          mask:url("assets/waratah-mask.png") center/contain no-repeat;
+}
+/* ensure all existing content shows above the overlay */
+.holo>*:not(.holo-overlay){position:relative;z-index:10;}
