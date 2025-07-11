@@ -2,8 +2,8 @@
 
 :root {
   --licence-red: #d44646;
-  /* adjust to scale holographic relative to card */
-  --holo-size: 1040px;
+  /* scale holographic overlay relative to viewport width */
+  --holo-size: 100vw;
 }
 
 /* ── Angled red ribbon under nav bar ───────────────────────── */
@@ -38,7 +38,7 @@
     #fbc2eb 30deg 45deg,
     #fdf497 45deg 60deg
   );
-  filter: contrast(1.25) brightness(1.1) saturate(1.4);
+  filter: contrast(1.25) brightness(1.1) saturate(1.4) hue-rotate(0deg);
   mix-blend-mode: screen;
 
   /*  animate rotation */
@@ -47,7 +47,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
+  animation: spin 12s linear infinite, iridescence 10s linear infinite;
 
   /*  cut pattern into custom Waratah outline  */
   /*  supply your own file in /assets or adjust path  */
@@ -59,6 +59,12 @@
 @keyframes spin {
   to {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes iridescence {
+  to {
+    filter: contrast(1.25) brightness(1.1) saturate(1.4) hue-rotate(360deg);
   }
 }
 
