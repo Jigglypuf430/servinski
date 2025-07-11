@@ -3,7 +3,7 @@
 :root {
   --licence-red: #d44646;
   /* adjust to scale holographic relative to card */
-  --holo-size: 1040px;
+  --holo-size: 828px;
 }
 
 /* ── Angled red ribbon under nav bar ───────────────────────── */
