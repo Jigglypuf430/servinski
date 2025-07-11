@@ -4,7 +4,7 @@
 
 // 1. Generate QR code (static demo)
 // 2. Show live refreshed timestamp on load
-// 3. Drive hologram parallax + slow spin via
+// 3. Drive hologram parallax without rotation
 //    – DeviceOrientation on mobile (gyroscope/accelerometer)
 //    – Mouse movement fallback on desktop
 // =====================================================
@@ -22,24 +22,53 @@ window.addEventListener("DOMContentLoaded", () => {
 
   updateTimestamp();
 
-  /* ---------- Hologram physics ---------------------------------- */
+  /* ---------- Hologram parallax --------------------------------- */
   const holo = document.getElementById("holoLayer");
-  if (!holo) return; // bailout if markup missing
+  if (!holo) return;
 
-  // Accumulated tilt offsets (pixels)
-  let tiltX = 0;
-  let tiltY = 0;
-  // Slow rotational angle (degrees)
-  let spin = 0;
+  const MAX_SHIFT = 30; // px
 
-  // CONFIG – tune to taste
-  const MAX_TILT_DEG = 25; // clamp device tilt we map
-  const MAX_SHIFT_PX = 40; // max pixel translation from centre
-  const SPIN_SPEED = 0; // deg per frame (~9 deg/s @60fps)
+  function applyShift(x, y) {
+    holo.style.setProperty("--shift-x", `${x}px`);
+    holo.style.setProperty("--shift-y", `${y}px`);
+  }
 
-  // ---------- DeviceOrientation (mobile) ----------
+  function handleOrientation(e) {
+    const xRatio = Math.max(-30, Math.min(30, e.gamma || 0)) / 30;
+    const yRatio = Math.max(-30, Math.min(30, e.beta || 0)) / 30;
+    applyShift(xRatio * MAX_SHIFT, yRatio * MAX_SHIFT);
+  }
+
+  function handleMouse(e) {
+    const rect = holo.getBoundingClientRect();
+    const xRatio = (e.clientX - rect.left) / rect.width - 0.5;
+    const yRatio = (e.clientY - rect.top) / rect.height - 0.5;
+    applyShift(xRatio * MAX_SHIFT, yRatio * MAX_SHIFT);
+  }
+
   if (window.DeviceOrientationEvent) {
-    // iOS 13+ may require permission request triggered by user gesture.
-    function enableOrientation() {
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPerm
+    window.addEventListener("deviceorientation", handleOrientation);
+  }
+
+  window.addEventListener("mousemove", handleMouse);
+});
+
+function formatTime(date) {
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function updateTimestamp() {
+  const now = new Date();
+  const refDate = document.getElementById("refDate");
+  const refTime = document.getElementById("refTime");
+  if (refDate)
+    refDate.textContent = now.toLocaleDateString("en-AU", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  if (refTime) refTime.textContent = formatTime(now);
+}
