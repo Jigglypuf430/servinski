@@ -31,31 +31,26 @@ body{
 
 /* rainbow layer */
 .holo-overlay{
-  position:absolute;
-  top:35%; left:0;                            /* start below portrait */
-  width:100%; height:65%;
+  position:absolute;inset:0;
   background:url("assets/holo.png") center/cover no-repeat;
   opacity:0.65;
   filter:url(#liquidDistortion);
-  mix-blend-mode:screen;                      /* comment out if washed-out */
+- mix-blend-mode:screen;
   pointer-events:none;
   z-index:0;
-
   -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
           mask:url("assets/waratah-mask.png") center/contain no-repeat;
 }
 
-/* moving sheen */
 .holo-overlay::after{
   content:"";
-  position:absolute;
-  inset:-25%;
-  background:linear-gradient(60deg,
-     transparent 40%, rgba(255,255,255,.7) 50%, transparent 60%);
-  mix-blend-mode:soft-light;
+  position:absolute;inset:-25%;
+  background:linear-gradient(60deg,transparent 40%,rgba(255,255,255,.7)50%,transparent 60%);
+- mix-blend-mode:soft-light;
   animation:sheen 8s linear infinite;
   pointer-events:none;
 }
+
 
 /* lift real content above overlay */
 .holo > *:not(.holo-overlay){
