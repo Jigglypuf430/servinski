@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.querySelector('.holo-overlay');
   if (!overlay) return;
-const SENSITIVITY = 3;  
+const SENSITIVITY = 30;  
   /* tilt handler */
   function handle(e){
     const gamma = Math.max(-90, Math.min(90, e.gamma || 0));

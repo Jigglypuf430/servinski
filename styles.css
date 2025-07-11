@@ -4,70 +4,48 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Base card / page colours ---------- */
+/* ---------- Basic page colours ---------- */
 body{
-  background:#f3f4f6;                         /* gray-100 */
+  background:#f3f4f6;            /* gray-100 */
   margin:0;
   font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:#111827;                              /* gray-900 */
+  color:#111827;                 /* gray-900 */
 }
 
-/* licence card container inherits Tailwind classes in markup */
-
-/* red ribbon bar */
+/* Red ribbon */
 .ribbon{
   height:4px;
   background:linear-gradient(90deg,#b91c1c,#dc2626 50%,#b91c1c);
 }
 
-/* ---------- Holographic Waratah layer ---------- */
-
-/* parent section */
+/* ---------- Holographic Waratah ---------- */
 .holo{
   position:relative;
   overflow:hidden;
-  --tilt-sensitivity:1;                       /* tweak in JS or inline */
+  --tilt-sensitivity:1;          /* tune in JS or inline */
 }
 
-/* rainbow layer */
+/* Colourful layer */
 .holo-overlay{
-  position:absolute;inset:0;
+  position:absolute;
+  inset:0;
   background:url("assets/holo.png") center/cover no-repeat;
-  opacity:0.65;
-  filter:url(#liquidDistortion);
-- mix-blend-mode:screen;
+  opacity:0.75;
+  /* punchier look without shimmer */
+  filter:
+    url(#liquidDistortion)
+    saturate(1.3)                /* bump saturation */
+    contrast(1.15);              /* bump contrast  */
   pointer-events:none;
   z-index:0;
+
+  /* mask to Waratah silhouette */
   -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
           mask:url("assets/waratah-mask.png") center/contain no-repeat;
 }
 
-.holo-overlay::after{
-  content:"";
-  position:absolute;inset:-25%;
-  background:linear-gradient(60deg,transparent 40%,rgba(255,255,255,.7)50%,transparent 60%);
-- mix-blend-mode:soft-light;
-  animation:sheen 8s linear infinite;
-  pointer-events:none;
-}
-
-
-/* lift real content above overlay */
+/* keep content on top */
 .holo > *:not(.holo-overlay){
   position:relative;
   z-index:10;
 }
-
-/* sheen animation */
-@keyframes sheen{
-  from{transform:translate(-100%,-100%);}
-  to  {transform:translate(100%,100%);}
-}
-
-/* ---------- Debug helper (comment out) ---------- */
-/*
-.holo-overlay{
-  background:hotpink !important;
-  mix-blend-mode:normal !important;
-}
-*/
