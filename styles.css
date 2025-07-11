@@ -24,7 +24,7 @@ body{
   position:absolute;
   inset:0;
   background:url("assets/holo.png") center/cover no-repeat;
-  opacity:0.75;
+  opacity:0.4;
   /* punchier look without shimmer */
   filter:
     url(#liquidDistortion)
