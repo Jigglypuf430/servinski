@@ -1,70 +1,78 @@
-/* ----------------------------------------------------------- *
-   Tailwind layers (CDN build auto-injects base / components / utilities)
-   Only add your custom rules below
- * ----------------------------------------------------------- */
+/* ===================  styles.css  =================== */
+/* Tailwind layers (CDN build auto-injects base / comps / utils) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Body base colour just like Tailwind gray-100 */
+/* ---------- Base card / page colours ---------- */
 body{
-  background:#f3f4f6;
+  background:#f3f4f6;                         /* gray-100 */
   margin:0;
   font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:#111827;          /* gray-900 */
+  color:#111827;                              /* gray-900 */
 }
 
-/* --------------------------------------------- *
-   HOLOGRAPHIC W A R A T A H  implementation
- * --------------------------------------------- */
+/* licence card container inherits Tailwind classes in markup */
 
-/* The section that owns the hologram */
+/* red ribbon bar */
+.ribbon{
+  height:4px;
+  background:linear-gradient(90deg,#b91c1c,#dc2626 50%,#b91c1c);
+}
+
+/* ---------- Holographic Waratah layer ---------- */
+
+/* parent section */
 .holo{
   position:relative;
-  overflow:hidden;        /* clip overlay to card */
+  overflow:hidden;
+  --tilt-sensitivity:1;                       /* tweak in JS or inline */
 }
 
-/* Main coloured layer that we pan with tilt */
+/* rainbow layer */
 .holo-overlay{
   position:absolute;
-  inset:0;                        /* fills card */
+  top:35%; left:0;                            /* start below portrait */
+  width:100%; height:65%;
   background:url("assets/holo.png") center/cover no-repeat;
-  opacity:0.65;                   /* tweak strength */
-  filter:url(#liquidDistortion);  /* SVG liquid wobble */
-  mix-blend-mode:screen;          /* lighter pastel vibe */
+  opacity:0.65;
+  filter:url(#liquidDistortion);
+  mix-blend-mode:screen;                      /* comment out if washed-out */
   pointer-events:none;
   z-index:0;
 
-  /* Waratah mask */
   -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
           mask:url("assets/waratah-mask.png") center/contain no-repeat;
 }
 
-/* Subtle diagonal sheen (Service NSW-like) */
+/* moving sheen */
 .holo-overlay::after{
   content:"";
   position:absolute;
-  inset:-25%;                     /* oversize so we can slide */
-  background:
-    linear-gradient(60deg,
-      rgba(255,255,255,0)   40%,
-      rgba(255,255,255,0.65)50%,
-      rgba(255,255,255,0)   60%);
-  mix-blend-mode:soft-light;      /* interacts with colours */
-  animation:sheenSweep 8s linear infinite;
+  inset:-25%;
+  background:linear-gradient(60deg,
+     transparent 40%, rgba(255,255,255,.7) 50%, transparent 60%);
+  mix-blend-mode:soft-light;
+  animation:sheen 8s linear infinite;
   pointer-events:none;
 }
 
-/* All real content must appear above overlay */
+/* lift real content above overlay */
 .holo > *:not(.holo-overlay){
   position:relative;
   z-index:10;
 }
 
-/* --------------------------------------------- *
-   𝘲𝘶𝘪𝘤𝘬 𝘥𝘦𝘣𝘶𝘨 — uncomment to eyeball overlay bounds
-   .holo-overlay{ background:hotpink !important; }
- * --------------------------------------------- */
-
-/* Keyframes for diagonal glint */
-@keyframes sheenSweep{
-  from{ transform:translate(-100%,-100%); }
-  to  { transform:translate(100%,100%); }
+/* sheen animation */
+@keyframes sheen{
+  from{transform:translate(-100%,-100%);}
+  to  {transform:translate(100%,100%);}
 }
+
+/* ---------- Debug helper (comment out) ---------- */
+/*
+.holo-overlay{
+  background:hotpink !important;
+  mix-blend-mode:normal !important;
+}
+*/
