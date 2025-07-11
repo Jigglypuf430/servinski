@@ -39,7 +39,8 @@
     #fdf497 45deg 60deg
   );
   filter: contrast(1.25) brightness(1.1) saturate(1.4);
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
 
   /*  animate rotation */
   width: var(--holo-size);
@@ -47,7 +48,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
+  animation: none;
 
   /*  cut pattern into custom Waratah outline  */
   /*  supply your own file in /assets or adjust path  */
