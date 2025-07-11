@@ -49,3 +49,11 @@ body{
   position:relative;
   z-index:10;
 }
+.glint-debug{
+  position:absolute;inset:0;          /* cover card */
+  background:radial-gradient(circle at 50% 50%,
+              rgba(255,255,255,.9) 0 10%,
+              rgba(255,255,255,0) 60%);
+  pointer-events:none;
+  z-index:20;                         /* topmost so you can see it */
+}
