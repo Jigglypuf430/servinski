@@ -30,36 +30,32 @@
   z-index: 0;
   pointer-events: none;
 
-  /*  psychedelic swirl palette */
-  background: repeating-conic-gradient(
+  /* gradient palette */
+  background-image: repeating-conic-gradient(
     from 0deg at 50% 50%,
     #fdf497 0deg 15deg,
     #a6c0fe 15deg 30deg,
     #fbc2eb 30deg 45deg,
     #fdf497 45deg 60deg
   );
+  background-repeat: no-repeat;
+  background-size: var(--holo-size) var(--holo-size);
+  background-position: var(--holo-pos-x,50%) var(--holo-pos-y,50%);
+
   filter: contrast(1.25) brightness(1.1) saturate(1.4);
   mix-blend-mode: screen;
 
-  /*  animate rotation */
+  /* size & centering + spin */
   width: var(--holo-size);
   height: var(--holo-size);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
 
-  /*  cut pattern into custom Waratah outline  */
-  /*  supply your own file in /assets or adjust path  */
+  /* mask to waratah shape */
   --mask-asset: url("assets/waratah-mask.png");
   mask: var(--mask-asset) center/contain no-repeat;
   -webkit-mask: var(--mask-asset) center/contain no-repeat;
-}
-
-@keyframes spin {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
 }
 
 /* ── Badge styling (Under‑18) ─────────────────────────────── */
