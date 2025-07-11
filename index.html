@@ -2,63 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NSW Digital Licence – Prototype</title>
 
-  <!-- Tailwind utility framework (keeps markup concise) -->
+  <!-- Tailwind (CDN mode) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Custom styles -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- 3‑rd‑party QRCode library (must load *before* script.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-  <!-- Status‑bar safe‑area placeholder (iOS) -->
+
   <div class="h-6"></div>
 
-  <!-- ── Top navigation bar ─────────────────────────────── -->
+  <!-- Nav bar -->
   <header class="flex items-center justify-between px-3 py-2 bg-white shadow-sm sticky top-0 z-30">
-    <button id="backBtn" class="text-2xl" aria-label="Back">&larr;</button>
+    <button class="text-2xl" aria-label="Back">←</button>
     <h1 class="text-base font-semibold">Provisional Driver Licence</h1>
-    <button id="menuBtn" class="text-2xl" aria-label="Menu">&#8942;</button>
+    <button class="text-2xl" aria-label="Menu">⋮</button>
   </header>
-  <div class="ribbon"></div>
 
-  <!-- ── Licence card ───────────────────────────────────── -->
+  <!-- Licence card -->
   <main class="max-w-sm mx-auto bg-white shadow-md rounded-b-lg overflow-hidden">
     <section class="p-4 holo">
-      <!-- NSW logo + portrait -->
+      <!-- Hologram layer -->
+      <div class="holo-overlay"></div>
+
+      <!-- Logo & portrait -->
       <div class="flex justify-between items-start">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/NSW_Government_logo.svg" alt="NSW" class="h-6 w-auto" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/NSW_Government_logo.svg" alt="NSW" class="h-6" />
         <figure class="w-32 h-40 rounded-sm overflow-hidden shadow-inner border border-gray-200">
-          <!-- Replace placeholder with real portrait -->
           <img src="https://placehold.co/240x300" alt="Portrait" class="object-cover w-full h-full" />
         </figure>
       </div>
 
-      <!-- Refresh timestamp -->
+      <!-- Refresh time -->
       <div class="text-right text-xs text-gray-600 mt-1">
         <p class="font-semibold">Refreshed</p>
-        <p id="refDate">17 Jan 2025</p>
-        <p id="refTime">10:14 am</p>
+        <p>17 Jan 2025</p>
+        <p>10 : 14 am</p>
       </div>
 
-      <!-- Name / licence details / QR -->
+      <!-- Details -->
       <div class="mt-4 flex flex-col gap-2">
-        <h2 id="fullName" class="text-2xl font-bold tracking-wide leading-6">
-          Callum John BUSH‑BRADY
-        </h2>
+        <h2 class="text-2xl font-bold leading-6">Callum John BUSH-BRADY</h2>
+
         <div class="flex gap-4 mt-2">
           <div class="flex-1 text-sm">
             <p class="text-gray-600">Licence number</p>
-            <p id="licenceNumber" class="text-xl font-bold">25216610</p>
+            <p class="text-xl font-bold">25216610</p>
 
             <p class="mt-2 text-gray-600">Expiry</p>
-            <p id="expiry" class="text-xl font-bold">13 Jul 2026</p>
+            <p class="text-xl font-bold">13 Jul 2026</p>
           </div>
-          <!-- QR placeholder -->
           <div id="qrcode" class="w-32 h-32 flex-shrink-0"></div>
         </div>
       </div>
@@ -69,29 +65,40 @@
       <div>
         <p class="text-gray-600">Date of birth</p>
         <p class="text-xl font-bold">
-          19 Dec 2007 <span class="badge ml-2">Under 18</span>
+          19 Dec 2007 <span class="inline-block text-white bg-blue-600 rounded-full px-2 py-0.5 text-xs">Under 18</span>
         </p>
       </div>
+
       <div class="grid grid-cols-2 gap-4 text-base font-medium">
         <div class="bg-gray-100 p-3 rounded-lg">
           <p class="text-gray-600 text-sm mb-1">Class</p>
-          C P1
+          C P1
         </div>
         <div class="bg-gray-100 p-3 rounded-lg">
           <p class="text-gray-600 text-sm mb-1">Conditions</p>
           Y
         </div>
       </div>
+
       <div class="bg-gray-100 p-3 rounded-lg whitespace-pre-line leading-snug">
         <p class="text-gray-600 text-sm mb-1">Address</p>
-        UNIT 21,
-        49‑53 ALBION ST,
-        WAVERLEY NSW 2024
+        UNIT 21,
+        49-53 ALBION ST,
+        WAVERLEY NSW 2024
       </div>
     </section>
   </main>
 
-  <!-- Custom behaviour -->
+  <!-- liquid-distortion SVG filter -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <filter id="liquidDistortion">
+      <feTurbulence id="turbulence" type="turbulence"
+                    baseFrequency="0.01 0.02" numOctaves="3"/>
+      <feDisplacementMap in="SourceGraphic" in2="turbulence"
+                         scale="30" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
   <script src="script.js"></script>
 </body>
 </html>

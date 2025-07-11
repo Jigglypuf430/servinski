@@ -1,32 +1,30 @@
-// script.js
+// script.js – pan hologram with device tilt
 document.addEventListener('DOMContentLoaded', () => {
-  const holo = document.querySelector('.holo');
-  if (!holo) return;
+  const overlay = document.querySelector('.holo-overlay');
+  if (!overlay) return;
 
-  // Map device tilt to background-position
-  function handleOrientation(event) {
-    const gamma = Math.max(-90, Math.min(90, event.gamma  || 0));
-    const beta  = Math.max(-90, Math.min(90, event.beta   || 0));
-
-    const xPct = 50 + (gamma / 90) * 50;
-    const yPct = 50 + (beta  / 90) * 50;
-
-    holo.style.backgroundPosition = `${xPct}% ${yPct}%`;
+  /* tilt handler */
+  function handle(e){
+    const gamma = Math.max(-90, Math.min(90, e.gamma || 0));
+    const beta  = Math.max(-90, Math.min(90, e.beta  || 0));
+    overlay.style.backgroundPosition =
+      `${50 + gamma/90*50}% ${50 + beta/90*50}%`;
   }
 
-  // iOS 13+ permission flow
-  if (window.DeviceOrientationEvent &&
-      typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission()
-      .then(permission => {
-        if (permission === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-        }
-      })
-      .catch(console.error);
+  /* iOS motion permission */
+  const enableTilt = () => {
+    if (window.DeviceOrientationEvent &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+        .then(res => res === 'granted' &&
+              window.addEventListener('deviceorientation', handle))
+        .catch(console.error);
+    } else {
+      window.addEventListener('deviceorientation', handle);
+    }
+    document.body.removeEventListener('click', enableTilt);
+  };
 
-  } else {
-    // Other browsers/devices
-    window.addEventListener('deviceorientation', handleOrientation);
-  }
+  /* first user tap grants permission on iOS */
+  document.body.addEventListener('click', enableTilt, {once:true});
 });
