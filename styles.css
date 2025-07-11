@@ -2,8 +2,6 @@
 
 :root {
   --licence-red: #d44646;
-  /* adjust to scale holographic relative to card */
-  --holo-size: 414px;
 }
 
 /* ── Angled red ribbon under nav bar ───────────────────────── */
@@ -17,45 +15,29 @@
 /* ── Holographic backdrop masking ──────────────────────────── */
 .holo {
   position: relative;
+  overflow: hidden;
 }
-.holo > * {
-  /* keep all text/content above the holo swirl */
-  position: relative;
-  z-index: 1;
-}
-.holo::before {
-  content: "";
+.holo-overlay {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  background: url("assets/holo.png") center/cover no-repeat;
+  opacity: 0.6;
   pointer-events: none;
-
-  /* gradient palette */
-  background-image: repeating-conic-gradient(
-    from 0deg at 50% 50%,
-    #fdf497 0deg 15deg,
-    #a6c0fe 15deg 30deg,
-    #fbc2eb 30deg 45deg,
-    #fdf497 45deg 60deg
-  );
-  background-repeat: no-repeat;
-  background-size: var(--holo-size) var(--holo-size);
-  background-position: var(--holo-pos-x,50%) var(--holo-pos-y,50%);
-
-  filter: contrast(1.25) brightness(1.1) saturate(1.4);
-  mix-blend-mode: screen;
-
-  /* size & centering + spin */
-  width: var(--holo-size);
-  height: var(--holo-size);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* mask to waratah shape */
-  --mask-asset: url("assets/waratah-mask.png");
-  mask: var(--mask-asset) center/contain no-repeat;
-  -webkit-mask: var(--mask-asset) center/contain no-repeat;
+  z-index: 0;
+  --mask: url("assets/waratah-mask.png");
+  mask-image: var(--mask);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-image: var(--mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  filter: url(#liquidDistortion);
+}
+.holo > *:not(.holo-overlay) {
+  position: relative;
+  z-index: 10;
 }
 
 /* ── Badge styling (Under‑18) ─────────────────────────────── */

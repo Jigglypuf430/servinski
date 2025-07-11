@@ -29,6 +29,7 @@
   <!-- ── Licence card ───────────────────────────────────── -->
   <main class="max-w-sm mx-auto bg-white shadow-md rounded-b-lg overflow-hidden">
     <section class="p-4 holo">
+      <div class="holo-overlay"></div>
       <!-- NSW logo + portrait -->
       <div class="flex justify-between items-start">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/NSW_Government_logo.svg" alt="NSW" class="h-6 w-auto" />
@@ -93,5 +94,11 @@
 
   <!-- Custom behaviour -->
   <script src="script.js"></script>
+  <svg class="hidden" width="0" height="0" aria-hidden="true">
+    <filter id="liquidDistortion">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005 0.01" numOctaves="3" result="warp" />
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="20" />
+    </filter>
+  </svg>
 </body>
 </html>
