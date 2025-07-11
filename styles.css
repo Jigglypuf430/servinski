@@ -1,8 +1,5 @@
 /* ===================  styles.css  =================== */
 /* Tailwind layers (CDN build auto-injects base / comps / utils) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* ---------- Basic page colours ---------- */
 body{
@@ -12,48 +9,67 @@ body{
   color:#111827;                 /* gray-900 */
 }
 
-/* Red ribbon */
+/* ---------- Thin red ribbon ---------- */
 .ribbon{
   height:4px;
   background:linear-gradient(90deg,#b91c1c,#dc2626 50%,#b91c1c);
 }
 
-/* ---------- Holographic Waratah ---------- */
-.holo{
+/* -----------------------------------------------------------------
+   LICENCE CARD  (glassmorphism shell)
+   ----------------------------------------------------------------- */
+.licence{
   position:relative;
-  overflow:hidden;
-  --tilt-sensitivity:1;          /* tune in JS or inline */
+  background:rgba(255,255,255,.12);        /* frosted glass body      */
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid rgba(255,255,255,.30);  /* subtle inside stroke    */
+  box-shadow:0 6px 24px rgba(0,0,0,.25);   /* deep shadow “pop”       */
+  overflow:hidden;                         /* clip hologram & content */
 }
 
-/* Colourful layer */
+/* -----------------------------------------------------------------
+   HOLOGRAPHIC WARATAH  (tilt-driven, no shimmer)
+   ----------------------------------------------------------------- */
+.holo{
+  position:relative;
+  pointer-events:none;         /* JS tilts it; user never taps it   */
+  --tilt-sensitivity:1;        /* read by script.js (px per degree) */
+}
+
 .holo-overlay{
   position:absolute;
   inset:0;
   background:url("assets/holo.png") center/cover no-repeat;
-  opacity:0.75;
-  /* punchier look without shimmer */
+  opacity:0.75;                /* ink strength – tweak to taste     */
+  /* punchier colour without any moving shine */
   filter:
-    url(#liquidDistortion)
-    saturate(1.3)                /* bump saturation */
-    contrast(1.15);              /* bump contrast  */
-  pointer-events:none;
+    url(#liquidDistortion)     /* optional SVG distortion            */
+    saturate(1.3)
+    contrast(1.15);
   z-index:0;
 
-  /* mask to Waratah silhouette */
+  /* Mask the colourful swirl to a Waratah silhouette                */
   -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
           mask:url("assets/waratah-mask.png") center/contain no-repeat;
+
+  transition:transform .1s linear;   /* smoothed by JS tilt updates  */
 }
 
-/* keep content on top */
+/* Keep every other child of .holo above the overlay                 */
 .holo > *:not(.holo-overlay){
   position:relative;
   z-index:10;
 }
-.glint-debug{
-  position:absolute;inset:0;          /* cover card */
+
+/* -----------------------------------------------------------------
+   DEBUG GLINT  (uncomment when you need to see the mask area)
+   ----------------------------------------------------------------- */
+/* .glint-debug{
+  position:absolute;inset:0;
   background:radial-gradient(circle at 50% 50%,
               rgba(255,255,255,.9) 0 10%,
               rgba(255,255,255,0) 60%);
   pointer-events:none;
-  z-index:20;                         /* topmost so you can see it */
-}
+  z-index:20;
+} */

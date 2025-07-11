@@ -8,7 +8,7 @@
   <!-- Tailwind (CDN mode) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Custom stylesheet (contains hologram rules) -->
+  <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-gray-100 font-sans">
@@ -27,11 +27,12 @@
   <div class="ribbon"></div>
 
   <!-- Licence card -->
-  <main class="max-w-sm mx-auto bg-white shadow-md rounded-b-lg overflow-hidden">
-    <section class="p-4 holo">
-      <!-- Holographic Waratah overlay (masked) -->
-      <div class="holo-overlay"></div>
+  <main class="licence relative max-w-sm mx-auto shadow-md rounded-b-lg overflow-hidden">
+    <!-- Hologram layer -->
+    <img class="holo" src="waratah.png" alt="Hologram pattern" />
 
+    <!-- Everything else sits above the hologram -->
+    <section class="p-4 relative z-10">
       <!-- Logo & portrait -->
       <div class="flex justify-between items-start">
         <img
@@ -75,7 +76,7 @@
     </section>
 
     <!-- Secondary details -->
-    <section class="p-4 pt-0 space-y-4 text-sm">
+    <section class="p-4 pt-0 space-y-4 text-sm relative z-10">
       <div>
         <p class="text-gray-600">Date of birth</p>
         <p class="text-xl font-bold">
@@ -106,7 +107,7 @@
     </section>
   </main>
 
-  <!-- Liquid-distortion SVG filter -->
+  <!-- Liquid-distortion SVG filter (unused for now, keep if you need it) -->
   <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
     <filter id="liquidDistortion">
       <feTurbulence id="turbulence"
@@ -121,7 +122,7 @@
     </filter>
   </svg>
 
-  <!-- JS for tilt-driven hologram -->
+  <!-- Tilt-driven hologram -->
   <script src="script.js"></script>
 </body>
 </html>
