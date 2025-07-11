@@ -1,24 +1,70 @@
-/* Tailwind layers (in CDN mode @apply still works) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ----------------------------------------------------------- *
+   Tailwind layers (CDN build auto-injects base / components / utilities)
+   Only add your custom rules below
+ * ----------------------------------------------------------- */
 
-/* Make .holo a stacking context */
-.holo { position:relative; overflow:hidden; }
+/* Body base colour just like Tailwind gray-100 */
+body{
+  background:#f3f4f6;
+  margin:0;
+  font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#111827;          /* gray-900 */
+}
 
-/* Hologram layer */
+/* --------------------------------------------- *
+   HOLOGRAPHIC W A R A T A H  implementation
+ * --------------------------------------------- */
+
+/* The section that owns the hologram */
+.holo{
+  position:relative;
+  overflow:hidden;        /* clip overlay to card */
+}
+
+/* Main coloured layer that we pan with tilt */
 .holo-overlay{
-  position:absolute; inset:0;
+  position:absolute;
+  inset:0;                        /* fills card */
   background:url("assets/holo.png") center/cover no-repeat;
-  opacity:0.6;
-  filter:url(#liquidDistortion);
+  opacity:0.65;                   /* tweak strength */
+  filter:url(#liquidDistortion);  /* SVG liquid wobble */
+  mix-blend-mode:screen;          /* lighter pastel vibe */
   pointer-events:none;
   z-index:0;
 
-  /* Mask to Waratah */
+  /* Waratah mask */
   -webkit-mask:url("assets/waratah-mask.png") center/contain no-repeat;
           mask:url("assets/waratah-mask.png") center/contain no-repeat;
 }
 
-/* Ensure text/images sit above hologram */
-.holo > *:not(.holo-overlay){ position:relative; z-index:10; }
+/* Subtle diagonal sheen (Service NSW-like) */
+.holo-overlay::after{
+  content:"";
+  position:absolute;
+  inset:-25%;                     /* oversize so we can slide */
+  background:
+    linear-gradient(60deg,
+      rgba(255,255,255,0)   40%,
+      rgba(255,255,255,0.65)50%,
+      rgba(255,255,255,0)   60%);
+  mix-blend-mode:soft-light;      /* interacts with colours */
+  animation:sheenSweep 8s linear infinite;
+  pointer-events:none;
+}
+
+/* All real content must appear above overlay */
+.holo > *:not(.holo-overlay){
+  position:relative;
+  z-index:10;
+}
+
+/* --------------------------------------------- *
+   𝘲𝘶𝘪𝘤𝘬 𝘥𝘦𝘣𝘶𝘨 — uncomment to eyeball overlay bounds
+   .holo-overlay{ background:hotpink !important; }
+ * --------------------------------------------- */
+
+/* Keyframes for diagonal glint */
+@keyframes sheenSweep{
+  from{ transform:translate(-100%,-100%); }
+  to  { transform:translate(100%,100%); }
+}
