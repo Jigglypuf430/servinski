@@ -46,8 +46,11 @@
   height: var(--holo-size);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  animation: spin 12s linear infinite;
+  transform: translate(
+      calc(-50% + var(--shift-x, 0px)),
+      calc(-50% + var(--shift-y, 0px))
+    ) rotate(var(--spin, 0deg));
+  animation: none;
 
   /*  cut pattern into custom Waratah outline  */
   /*  supply your own file in /assets or adjust path  */
